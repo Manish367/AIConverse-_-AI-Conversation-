@@ -1,0 +1,70 @@
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+/* --- Full Screen Notice Overlay --- */
+.full-screen-notice {
+  position: fixed; /* Cover the entire screen */
+  inset: 0;
+  background-color: #121212; /* Match the main dark background */
+  z-index: 100; /* Ensure it's on top of everything */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  transition: opacity 0.5s ease-out; /* For a smooth fade-out */
+}
+
+/* This class will be used to trigger the fade-out */
+.full-screen-notice.hidden {
+  opacity: 0;
+  pointer-events: none; /* Make it unclickable when hidden */
+}
+
+.notice-content {
+  max-width: 800px; /* Keep text readable on wide screens */
+  text-align: center;
+}
+
+.info-note-heading {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #a9d4fd; /* Lighter blue for the heading */
+  margin-bottom: 1.5rem;
+}
+
+.info-note-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #b0c4de; /* Light Steel Blue - easy to read */
+  margin-bottom: 3rem;
+}
+
+.continue-button {
+  background: linear-gradient(90deg, #00bfff, #1e90ff);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.5s ease-in, transform 0.2s ease;
+  opacity: 0; /* Hidden by default */
+}
+
+.continue-button.visible {
+  opacity: 1; /* Fade in when visible */
+}
+
+.continue-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+}
+
+/* --- Ensure the typing effect still works --- */
+.full-screen-notice span {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
