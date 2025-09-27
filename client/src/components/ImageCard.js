@@ -33,15 +33,8 @@ export default function ImageCard({
 
   const absUrl = (u = "") => {
     if (!u) return "";
-    if (
-      u.startsWith("http://") ||
-      u.startsWith("https://") ||
-      u.startsWith("data:") ||
-      u.startsWith("blob:")
-    )
-      return u;
-    if (u.startsWith("/uploads/")) return `${API_URL}${u}`;
-    return u;
+    if (/^(https?:|data:|blob:)/i.test(u)) return u;
+    return `${API_URL}${u}`;
   };
 
   const src = img?.previewUrl || img?.url || "";

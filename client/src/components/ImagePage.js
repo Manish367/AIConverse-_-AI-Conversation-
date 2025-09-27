@@ -102,8 +102,7 @@ export default function ImagesPage({
               id: `${item.id}-user`,
               prompt: item.prompt,
               images: (item.params?.inputImages || []).map(
-                (img) => `${API_URL}${img.url}`
-              ),
+                (img) => img.url),
             },
             { type: "ai", id: item.id, ...item },
           ])

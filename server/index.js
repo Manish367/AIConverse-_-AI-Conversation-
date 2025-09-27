@@ -20,8 +20,7 @@ const app = express();
 
 // -------------------- MIDDLEWARES -------------------- //
 
-// THE FIX: Configure Helmet to allow cross-origin resource requests.
-// By default, helmet blocks this, causing the NotSameOrigin error for images.
+// Configure Helmet to allow cross-origin resource requests.
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
 // Define CORS options
@@ -35,11 +34,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // -------------------- STATIC UPLOADS -------------------- //
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "uploads");
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-
-console.log(`Serving static uploads from: ${UPLOAD_DIR}`);
-app.use("/uploads", express.static(UPLOAD_DIR));
+// NOTE: old local uploads removed -> Cloudinary now handles hosting.
+// So we completely skip creating/serving `uploads/` folder.
+// If you keep this, it can conflict or be redundant.
+// ---- Removed this section:
+// const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "uploads");
+// if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// app.use("/uploads", express.static(UPLOAD_DIR));
 
 // -------------------- API ROUTES -------------------- //
 app.use("/api/auth", authRoutes);
@@ -56,6 +57,7 @@ app.get("/api/health", (req, res) => {
     chatanywhereKey: !!process.env.CHATANYWHERE_API_KEY,
     deepaiKey: !!process.env.DEEPAI_API_KEY,
     hfKey: !!process.env.HF_API_KEY,
+    cloudinary: !!process.env.CLOUDINARY_CLOUD_NAME && !!process.env.CLOUDINARY_API_KEY,
   });
 });
 

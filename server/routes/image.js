@@ -1,6 +1,9 @@
 const express = require("express");
 const auth = require("../middleware/auth");
 const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
+
 const {
   uploadGenerationImages,
   createImageThread,
@@ -16,7 +19,16 @@ const router = express.Router();
 router.use(auth);
 
 const MAX_BYTES = 10 * 1024 * 1024;
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_BYTES, files: 3 }, fileFilter: (req, file, cb) => file.mimetype.startsWith("image/") ? cb(null, true) : cb(new Error("Only images allowed")), });
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "generation_inputs",
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+  },
+});
+
+const upload = multer({ storage, limits: { fileSize: MAX_BYTES, files: 3 } });
 
 router.post("/uploads", upload.array("images", 3), uploadGenerationImages);
 router.post("/threads", createImageThread);
